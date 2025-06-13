@@ -47,7 +47,10 @@ A dynamic Flask-based web application that scrapes and displays the latest **Foo
 ├── requirements.txt
 └── tempCodeRunnerFile.py
 
-⚙️ Tech Stack
+
+
+## ⚙️ Tech Stack
+
 Backend: Python 3.x, Flask
 
 Scraping: BeautifulSoup4, Requests
@@ -59,7 +62,8 @@ Scheduling: Schedule
 Frontend: HTML, Bootstrap (optional), AJAX (for dynamic loading)
 
 
-📅 Scheduling Notifications
+## 📅 Scheduling Notifications
+
 Go to http://localhost:5000/settings
 
 Choose your preferred time (e.g., 14:30)
@@ -70,14 +74,15 @@ Note: Keep the app running in the background for notifications to work.
 
 
 
-🧪 Example Output (Notification)
+## 🧪 Example Output (Notification)
 🏆 Match Updates
 
 New Football Matches Available!
 
 New NBA Matches Available!
 
-🗃 Requirements File (requirements.txt)
+
+## 🗃 Requirements File (requirements.txt)
 Flask
 requests
 beautifulsoup4
@@ -85,7 +90,7 @@ plyer
 schedule
 
 
-📢 Credits
+## 📢 Credits
 Football & NBA Fixtures: ESPN
 
 Cricket Schedules: NDTV Sports
@@ -94,7 +99,8 @@ News Headlines: LiveMint & IndianExpress
 
 Notifications: Plyer Python Library
 
-SCREENSHOTS
+
+## SCREENSHOTS
 
 ![Screenshot 2024-12-02 234141](https://github.com/user-attachments/assets/e470828f-c474-4fc0-9f8d-bf179e958e5c)
 
