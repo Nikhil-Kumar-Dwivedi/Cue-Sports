@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming Sports Matches</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            font-family: cursive;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+        /* background-image: url('/static/img1.avif'); */
+        /* background-size: cover; */
+        /* background-position: center; */
+        /* background-attachment: fixed; This makes sure the image stays in place while scrolling */
+        padding-top: 60px; /* Added space for the navbar */
+        }
+
+        /* Video background styling */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            background-color: rgb(116, 99, 137);
+            color: rgb(244, 215, 118);
+            padding: 5px 7px;
+            border-radius: 10px;
+            box-shadow:3px 3px 5px rgb(142, 185, 200);
+        }
+
+        .boxes {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+
+        .box {
+            margin: 30px;
+            position: relative;
+            overflow: hidden;
+            width: calc(50% - 40px);
+           width: 450px;
+            height: 350px;
+            cursor: pointer;
+            margin-bottom: 60px;
+            border-radius: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .box h3 {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .box:hover {
+            transform: scale(1.05);
+        }
+
+        .vertical-nav {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            min-width: 250px;
+            height: calc(100vh - 45px);
+            border-radius: 6px;
+            background-color: #cbf5aa;
+            border: 3px solid rgb(153, 205, 243);
+            padding-top: 20px;
+            transition: left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .vertical-nav.show {
+            left: 0;
+        }
+
+        .nav-link {
+            color: #000;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border-radius: 25px;
+            padding: 5px 10px; /* Padding around text */
+            display: inline-block;
+            text-align: center;
+        }
+
+        .nav-link:hover {
+            background-color: rgb(153, 205, 243);
+            border-radius: 25px;
+            color: red;
+        }
+
+        .nav {
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .menu-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            transition: box-shadow 0.3s ease;  /* this is line for the shado transiton */
+            background-color: #f5f4aa;
+            color: #000;
+            border: 3px solid rgb(153, 205, 243);
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+        }
+
+        .menu-btn:hover {
+            box-shadow: 4px 4px 13px gray;
+            transition: 3;
+        }
+
+        .menu-btn::before,
+        .menu-btn::after {
+            content: "";
+            display: block;
+            width: 20px;
+            height: 2px;
+            background-color: rgb(0, 0, 0);
+            margin: 3px 0;
+        }
+
+
+
+        /* Toggle button */
+        /* .menu-button { */
+            /* display: none; Hidden on larger screens */
+            /* background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer; */
+        /* } */
+
+        /* Responsive Styles */
+        /* @media screen and (max-width: 600px) {
+            .navbar a { display: none; }
+            .menu-button { display: block; }
+            .navbar.show a { display: block; }
+        } */
+
+
+        /* Background image for the entire modal-content */
+        /* Modal overlay */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+        }
+
+        /* Generic Modal Content Styling */
+        .modal-content {
+        position: relative;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 8px;
+        width: 60%;
+        max-width: 800px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        background-color: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        overflow: hidden;
+        border: 2px solid #ddd;
+        background-size: cover; /* Ensure image covers the whole area */
+        background-position: center; /* Center the image */
+        background-repeat: no-repeat; /* Disable image repetition */
+    }
+
+        /* Table styling */
+        table {
+    /* background-blend-mode: lighten; Blends the background for a lighter effect */
+    /* backdrop-filter: blur(10px); Ensures the background image appears blurred */
+    /* background-color: rgba(255, 255, 255, 0.8); Adds semi-transparency for readability */
+    color: #000; /* Text color for contrast */
+}
+
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: rgba(240, 198, 198, 0.9);
+            font-weight: bold;
+        }
+
+        thead, tbody {
+    position: relative;
+    z-index: 3; /* Table rows and headers are on top */
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background for readability */
+}
+
+        /* Close button styling */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: relative;
+            z-index: 3; /* Ensure it stays visible */
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Modal background image */
+        .modal-content::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: var(--modal-bg-image);
+        background-size: cover;
+        background-position: center;
+        filter: blur(5px);
+        opacity: 0.5;
+        z-index: 1;
+    }
+
+        /* Ensure Content Appears Above Background */
+        
+        /* Content above background */
+    .modal-content h2,
+    .modal-content table,
+    .modal-content .button {
+        position: relative;
+        z-index: 2;
+    }
+
+
+        /* .modal-content h2{
+            position: relative;
+            z-index: 2;
+            color: rgb(244, 215, 118);;
+        } */
+
+        /* Button styling */
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #f04e4e;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #d03e3e;
+        }
+        
+
+
+        ::-webkit-scrollbar-track {
+            background: rgba(224, 254, 250, 0.7);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgb(239, 221, 183);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgb(105, 175, 220);
+        }
+
+        @media screen and (max-width: 768px) {
+            .box {
+            width: 90%;
+            height: auto;
+            }
+        }
+
+        .footer {
+            background-color: #f5f4aa;
+            color: #000;
+            border: 3px solid rgb(153, 205, 243);
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 45px;
+            border-radius: 7px;
+        }
+
+        .footer a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    
+    
+
+    <!-- Background Video -->
+    <video autoplay muted loop class="video-bg">
+        <source src="/static/v3.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Menu Button -->
+    <button class="menu-btn" onclick="toggleNavbar()"><i class="fas fa-bars"></i> </button>
+
+    <!-- Vertical Navbar -->
+    <div id="navbar" class="vertical-nav">
+        <nav class="nav flex-column">
+            <a class="nav-link active" href="{{ url_for('welcome') }}">Home</a>
+            <a class="nav-link active" href="{{ url_for('community') }}">Community</a>
+            <a class="nav-link active" href="{{ url_for('news') }}">News</a>
+            <a class="nav-link active" href="{{ url_for('dipti') }}">Go for Tickets</a>
+            <a class="nav-link active" href="{{ url_for('settings') }}">Settings</a>
+            <a class="nav-link active" href="{{ url_for('about') }}">About</a>
+            <a class="nav-link active" href="{{ url_for('logout') }}">From-Start</a>
+        </nav>
+    </div>
+
+    <h2>Upcoming Sports Matches</h2>
+
+    <div class="boxes">
+        <div class="box" id="footballBox">
+            <h3>Football</h3>
+            <img src="static/img27.jpg" alt="Basketball">
+
+            <!-- <p>Get the latest updates on football matches!</p> -->
+        </div>
+        <div class="box" id="basketballBox">
+            <h3>Basketball</h3>
+            <img src="static/img25.jpg" alt="Basketball">
+            <!-- <p>Stay tuned for basketball game schedules!</p> -->
+        </div>
+        <div class="box" id="cricketBox">
+            <h3>Cricket</h3>
+            <img src="static/img26.jpg" alt="Basketball">
+            <!-- <p>Catch up with the latest cricket matches!</p> -->
+        </div>
+    </div>
+
+    <div id="footballModal" class="modal">
+        <div class="modal-content" data-bg="static/img26.jpg">
+            <span class="close" id="closeFootballModal">&times;</span>
+            <h2>Football Matches</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Home Team</th>
+                        <th>Away Team</th>
+                        <th>Time</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for match in football_matches %}
+                    <tr>
+                        <td>{{ match.date.strip() }}</td>
+                        <td>{{ match.home_team }}</td>
+                        <td>{{ match.away_team }}</td>
+                        <td>{{ match.time }}</td>
+                        <td>{{ match.location }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="https://www.espn.in/football/fixtures?league=eng.1" target="_blank">
+                <button class="button">View More on ESPN</button>
+            </a>
+        </div>
+    </div>
+    
+    
+
+    <div id="nbaModal" class="modal">
+        <div class="modal-content" data-bg="static/img4.jpeg">
+            <span class="close" id="closeNbaModal">&times;</span>
+            <h2>NBA Matches</h2>
+            <ul>
+                {% for match in nba_fixtures %}
+                    <li>
+                        <strong>Away Team:</strong> {{ match.away_team }} <br>
+                        <strong>Home Team:</strong> {{ match.home_team }} <br>
+                        <strong>Match Time:</strong> {{ match.match_time }} <br>
+                        <strong>Match Day:</strong> {{ match.match_date.strip() }} <br>
+                    </li>
+                {% endfor %}
+            </ul>
+            <a href="https://www.espn.com/nba/schedule" target="_blank">
+                <button class="button">View More on ESPN</button>
+            </a>
+        </div>
+    </div>
+
+    <div id="cricketModal" class="modal">
+        <div class="modal-content" data-bg="static/img4.jpeg">
+            <span class="close" id="closeCricketModal">&times;</span>
+            <h2>Cricket Matches</h2>
+            <ul>
+                {% for match in cricket_matches[:10] %}  <!-- Limiting to the first 10 matches -->
+                    <li>
+                        <strong>Teams:</strong> {{ match.teams[0] }} vs {{ match.teams[1] }} <br>
+                        <strong>Series:</strong> {{ match.series }} <br>
+                        <strong>Venue:</strong> {{ match.venue }} <br>
+                        <strong>Time:</strong> {{ match.time }} <br>
+                    </li>
+                {% endfor %}
+            </ul>
+            <a href="https://www.icc-cricket.com/fixtures-results" target="_blank">
+                <button class="button">View More on ICC</button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <a href="/static/img24.jpg" target="_blank">Scrappping_Of_The_Fixtures</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navbar toggle function
+        function toggleNavbar() {
+            const navbar = document.getElementById('navbar');
+            navbar.classList.toggle('show');
+        }
+
+        // Close the navbar when clicking outside of it
+        document.addEventListener('click', function(event) {
+            const navbar = document.getElementById('navbar');
+            const menuButton = document.querySelector('.menu-btn');
+
+            if (!navbar.contains(event.target) && !menuButton.contains(event.target)) {
+                navbar.classList.remove('show');
+            }
+        });
+
+        // Get the modal for football
+        var footballModal = document.getElementById("footballModal");
+        var footballBox = document.getElementById("footballBox");
+        var closeFootballModal = document.getElementById("closeFootballModal");
+
+        // When the user clicks the football box, open the modal
+        footballBox.onclick = function() {
+            footballModal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the football modal
+        closeFootballModal.onclick = function() {
+            footballModal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == footballModal) {
+                footballModal.style.display = "none";
+            }
+        }
+
+        // Get the modal for basketball
+        var basketballModal = document.getElementById("nbaModal");
+        var basketballBox = document.getElementById("basketballBox");
+        var closeBasketballModal = document.getElementById("closeNbaModal");
+
+        // When the user clicks the basketball box, open the modal
+        basketballBox.onclick = function() {
+            basketballModal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the basketball modal
+        closeBasketballModal.onclick = function() {
+            basketballModal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == basketballModal) {
+                basketballModal.style.display = "none";
+            }
+        }
+
+        // Get the modal for cricket
+        var cricketModal = document.getElementById("cricketModal");
+        var cricketBox = document.getElementById("cricketBox");
+        var closeCricketModal = document.getElementById("closeCricketModal");
+
+        // When the user clicks the cricket box, open the modal
+        cricketBox.onclick = function() {
+            cricketModal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the cricket modal
+        closeCricketModal.onclick = function() {
+            cricketModal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == cricketModal) {
+                cricketModal.style.display = "none";
+            }
+        }
+
+
+        document.querySelectorAll('.modal-content').forEach(modalContent => {
+    const bgImage = modalContent.getAttribute('data-bg');
+    const table = modalContent.querySelector('table');
+    if (table) {
+        table.style.backgroundImage = `url(${bgImage})`;
+        table.style.backgroundSize = 'cover';
+        table.style.backgroundPosition = 'center';
+        // table.style.filter = 'blur(10px)'; // Applies blur to the background image
+        // table.style.opacity = '0.9'; // Makes the image slightly visible
+        table.style.color = '#000'; // Ensures text is readable
+    }
+});
+
+
+
+    </script>
+    
+
+
+</body>
+</html>

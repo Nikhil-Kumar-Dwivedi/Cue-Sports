@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Notifications</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #6edaf5;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            color: #000;
+            font-family: cursive;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        /* div > img{
+            height: 300px;
+            width: 267px;
+        }  use CLASS instead of this */
+
+        .container {
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #e0fefa, #d0f0e4);
+            border-radius: 10px;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 0 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .header-title {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .header .button {
+            padding: 10px 20px;
+            color: #000;
+            background-color: #fff;
+            border: 3px solid rgb(153, 205, 243);
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        .header .button:hover {
+            background-color: rgb(153, 205, 243);
+            box-shadow: 4px 4px 13px gray;
+        }
+
+        .content-section {
+            background-color: rgba(253, 255, 222, 0.897);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            margin-bottom: 60px;
+            display: flex;
+            align-items: center;
+            flex-basis: calc(50% - 10px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .content-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 4px 4px 13px gray;
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin: 0;
+            color: #0056b3;
+        }
+
+        .section-description {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+
+        .section-image {
+            max-width: 267px;
+            height: 300px;
+            border-radius: 10px;
+            margin-left: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .section-image:hover {
+            transform: scale(1.1);
+            box-shadow: 4px 4px 13px gray;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        /* Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(224, 254, 250, 0.7);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgb(239, 221, 183);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgb(105, 175, 220);
+        }
+
+        /* Balloon Animation */
+        .balloon {
+            position: fixed;
+            width: 30px; /* Initial size */
+            height: 30px; /* Initial size */
+            border-radius: 50%; /* Make it circular */
+            opacity: 0; /* Start invisible */
+            animation: balloonFloat 6s ease-in-out infinite; /* Slower floating effect */
+        }
+
+        @keyframes balloonFloat {
+            0% {
+                opacity: 1; 
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-150px) scale(1.2); /* Max height */
+            }
+            100% {
+                opacity: 0; /* Fade out */
+                transform: translateY(-300px) scale(0); /* "Pop" effect */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with Logo, Title, and Explore button -->
+    <div class="header">
+        <div class="logo-container">
+            <img src="/static/img3.jpeg" alt="Logo" class="logo"> <!-- Update the 'src' with the path to your logo image -->
+            <h1 class="header-title">Cue-Sports</h1>
+        </div>
+        <a href="{{ url_for('welcome') }}" class="button">Explore</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="flex-container">
+            <div class="content-section">
+                <div>
+                    <h2 class="section-title">Welcome Page</h2>
+                    <p class="section-description">The Welcome page serves as an introduction to the Sports Notifications application, providing users with an overview of the features and functionalities available. It's the starting point for navigating through different sections of the app.</p>
+                </div>
+                <img src="/static/img24.jpg"  alt="Welcome" class="section-image" onclick="window.location.href='{{ url_for('welcome') }}';">
+            </div>
+
+            <div class="content-section" onclick="window.location.href='{{ url_for('about') }}';">
+                <div>
+                    <h2 class="section-title">About Page</h2>
+                    <p class="section-description">The About page offers information about the purpose of this application, the team behind its development, and how it aims to enhance users' experience by delivering timely sports updates. It highlights the vision and mission of the app.</p>
+                </div>
+                <img src="/static/img1.avif" height="300px" width="267px" alt="About" class="section-image">
+            </div>
+        </div>
+
+        <div class="flex-container">
+            <div class="content-section" onclick="window.location.href='{{ url_for('community') }}';">
+                <div>
+                    <h2 class="section-title">Community Page</h2>
+                    <p class="section-description">The Community page connects users with fellow sports enthusiasts, allowing them to share experiences, insights, and engage in discussions about various sports events and updates. It's a platform for building connections within the sports community.</p>
+                </div>
+                <img src="/static/img3.jpeg" alt="Community" class="section-image">
+            </div>
+
+            <div class="content-section" onclick="window.location.href='{{ url_for('news') }}';">
+                <div>
+                    <h2 class="section-title">News Page</h2>
+                    <p class="section-description">The News page provides the latest sports news and updates, ensuring users stay informed about ongoing and upcoming events. It aggregates information from various sources to deliver comprehensive coverage of the sports world.</p>
+                </div>
+                <img src="/static/img4.jpeg" alt="News" class="section-image">
+            </div>
+        </div>
+    </div>
+
+    <!-- Balloon Elements -->
+    <script>
+        const colors = ['#ff6347', '#ffd700', '#32cd32', '#1e90ff', '#ff69b4']; // Balloon colors
+
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]; // Random color
+
+            // Random position from all edges of the viewport
+            const edge = Math.floor(Math.random() * 4); // 0: Top, 1: Left, 2: Right, 3: Bottom
+            switch (edge) {
+                case 0: // Top
+                    balloon.style.left = Math.random() * window.innerWidth + 'px';
+                    balloon.style.top = -30 + 'px'; // Start slightly above the viewport
+                    break;
+                case 1: // Left
+                    balloon.style.left = -30 + 'px'; // Start from the left
+                    balloon.style.top = Math.random() * window.innerHeight + 'px';
+                    break;
+                case 2: // Right
+                    balloon.style.left = window.innerWidth + 'px'; // Start from the right
+                    balloon.style.top = Math.random() * window.innerHeight + 'px';
+                    break;
+                case 3: // Bottom
+                    balloon.style.left = Math.random() * window.innerWidth + 'px';
+                    balloon.style.top = window.innerHeight + 'px'; // Start slightly below the viewport
+                    break;
+            }
+
+            document.body.appendChild(balloon);
+
+            // Remove balloon after animation
+            balloon.addEventListener('animationend', () => {
+                balloon.remove();
+            });
+        }
+
+        setInterval(createBalloon, 100); // Create a balloon every second
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
